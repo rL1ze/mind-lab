@@ -5,7 +5,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow),
-    ball1(new Balls(this)), ball2(new Balls(this)), ball3(new Balls(this)), targetColor1(0), targetColor2(0),targetColor3(0),engine(QRandomGenerator::global()),distribution(0,2)
+    ball1(new Balls(this)), ball2(new Balls(this)), ball3(new Balls(this)), targetColor1(0), targetColor2(0),targetColor3(0),generator(QRandomGenerator::global()),distribution(0,2)
 {
     ui->setupUi(this);
 
@@ -16,10 +16,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->colorSelecting, &QComboBox::activated, this, &MainWindow::on_colorSelecting_activated);
     connect(ui->colorSelecting_2, &QComboBox::activated, this, &MainWindow::on_colorSelecting_2_activated);
     connect(ui->colorSelecting_3, &QComboBox::activated, this, &MainWindow::on_colorSelecting_3_activated);
-    connect(ui->newLvlButton, &QPushButton::clicked, this, &MainWindow::on_newLvlButton_clicked);
 
+    updateRuleGameText();
     on_newLvlButton_clicked();
-
     setFixedSize(size());
     setWindowFlags(windowFlags() & ~Qt::WindowMaximizeButtonHint);
 }
@@ -36,29 +35,42 @@ MainWindow::~MainWindow()
 void MainWindow::setupBall(Balls *ball, QFrame *frame){
     ball->view->setGeometry(frame->geometry());
     ball->view->setParent(frame);
-    ball->ellipseItem->setBrush(Qt::transparent);
 }
 
-void MainWindow::engineStartValues(){
-    targetColor1 = distribution(*engine);
-    targetColor2 = distribution(*engine);
-    targetColor3 = distribution(*engine);
+void MainWindow::startIndexBox(){
+    ui->colorSelecting->setCurrentIndex(-1);
+    ui->colorSelecting_2->setCurrentIndex(-1);
+    ui->colorSelecting_3->setCurrentIndex(-1);
+}
+
+void MainWindow::startColorBall(){
+    ball1->ellipseItem->setBrush(Qt::transparent);
+    ball2->ellipseItem->setBrush(Qt::transparent);
+    ball3->ellipseItem->setBrush(Qt::transparent);
+}
+
+void MainWindow::generatorColors(){
+    targetColor1 = distribution(*generator);
+    targetColor2 = distribution(*generator);
+    targetColor3 = distribution(*generator);
 }
 
 int MainWindow::uniqueNum(int num, int num2, int num3){
-    if(!isUnique(num, num2, num3)){
+    if(isUnique(num, num2, num3)){
         while (num == num2 || num == num3) {
-            num = distribution(*engine);
+            num = distribution(*generator);
         }
     }
     return num;
 }
 
 bool MainWindow::isUnique(int num, int num2, int num3){
-    if(num == num2 || num == num3)
+    if(num == num2 || num == num3){
         return true;
-    else
+    }
+    else{
         return false;
+    }
 }
 
 QString MainWindow::textColorBall(int randColor){
@@ -89,7 +101,7 @@ void MainWindow::on_colorSelecting(int index, Balls *ball){
         break;
     default:
         color = Qt::transparent;
-        break;
+        return;
     }
     ball->ellipseItem->setBrush(color);
 }
@@ -118,13 +130,15 @@ void MainWindow::updateRuleGameText()
 
 void MainWindow::on_newLvlButton_clicked()
 {
-    engineStartValues();
-    uniqueNum(targetColor1, targetColor2, targetColor3);
-    uniqueNum(targetColor2, targetColor1, targetColor3);
-    uniqueNum(targetColor3, targetColor1, targetColor2);
+    generatorColors();
+    startIndexBox();
+    startColorBall();
+
+    targetColor1 = uniqueNum(targetColor1, targetColor2, targetColor3);
+    targetColor2 = uniqueNum(targetColor2, targetColor1, targetColor3);
+    targetColor3 = uniqueNum(targetColor3, targetColor2, targetColor1);
 
     updateRuleGameText();
-
 }
 
 void MainWindow::on_colorSelecting_activated(int index)
