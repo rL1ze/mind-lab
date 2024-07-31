@@ -27,6 +27,9 @@ private slots:
     int uniqueNum(int num, int num2, int num3);
     bool isUnique(int num, int num2, int num3);
 
+    void setupBall(Balls *ball, QFrame *frame);
+    void engineStartValues();
+    void updateRuleGameText();
     void on_newLvlButton_clicked();
     void on_checkButton_clicked();
 
