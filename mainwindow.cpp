@@ -5,20 +5,23 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow),
-    ball1(new Balls(this)), ball2(new Balls(this)), ball3(new Balls(this)), targetColor1(0), targetColor2(0),targetColor3(0),generator(QRandomGenerator::global()),distribution(0,2)
+    ball1(new Balls(this, 50, 50)), ball2(new Balls(this, 50, 50)), ball3(new Balls(this, 50, 50)), uniqueNumbers(QVector<int>{0, 1, 2, 3, 4}), generator(QRandomGenerator::global())
 {
     ui->setupUi(this);
 
+    ui->frame_1->setFixedSize(150, 150);
     setupBall(ball1, ui->frame_1);
+    ui->frame_2->setFixedSize(150, 150);
     setupBall(ball2, ui->frame_2);
+    ui->frame_3->setFixedSize(150, 150);
     setupBall(ball3, ui->frame_3);
 
     connect(ui->colorSelecting, &QComboBox::activated, this, &MainWindow::on_colorSelecting_activated);
     connect(ui->colorSelecting_2, &QComboBox::activated, this, &MainWindow::on_colorSelecting_2_activated);
     connect(ui->colorSelecting_3, &QComboBox::activated, this, &MainWindow::on_colorSelecting_3_activated);
 
-    updateRuleGameText();
     on_newLvlButton_clicked();
+
     setFixedSize(size());
     setWindowFlags(windowFlags() & ~Qt::WindowMaximizeButtonHint);
 }
@@ -41,6 +44,17 @@ void MainWindow::startIndexBox(){
     ui->colorSelecting->setCurrentIndex(-1);
     ui->colorSelecting_2->setCurrentIndex(-1);
     ui->colorSelecting_3->setCurrentIndex(-1);
+    QComboBox *colorSelecting_4 = new QComboBox();
+    ui->gridLayout->addWidget(colorSelecting_4, 9, 5);
+
+    QFrame *frame = new QFrame(this);
+
+    // Настраиваем фрейм
+    frame->setFrameShape(QFrame::StyledPanel);
+    frame->setFrameShadow(QFrame::Raised);
+    frame->setFixedSize(150, 150);
+    //ui->gridLayout->addWidget(frame);
+    //setupBall(ball3, frame);
 }
 
 void MainWindow::startColorBall(){
@@ -49,28 +63,19 @@ void MainWindow::startColorBall(){
     ball3->ellipseItem->setBrush(Qt::transparent);
 }
 
-void MainWindow::generatorColors(){
-    targetColor1 = distribution(*generator);
-    targetColor2 = distribution(*generator);
-    targetColor3 = distribution(*generator);
-}
-
-int MainWindow::uniqueNum(int num, int num2, int num3){
-    if(isUnique(num, num2, num3)){
-        while (num == num2 || num == num3) {
-            num = distribution(*generator);
-        }
+QVector<int> MainWindow::generatorUniqueNum(int option){
+    if(option == 1){
+        uniqueNumbers.resize(3);
+        std::shuffle(uniqueNumbers.begin(), uniqueNumbers.end(), *generator);
+        return uniqueNumbers;
     }
-    return num;
-}
-
-bool MainWindow::isUnique(int num, int num2, int num3){
-    if(num == num2 || num == num3){
-        return true;
+    else if(option == 2){
+        uniqueNumbers.resize(5);
+        std::shuffle(uniqueNumbers.begin(), uniqueNumbers.end(), *generator);
+        return uniqueNumbers;
     }
-    else{
-        return false;
-    }
+    std::shuffle(uniqueNumbers.begin(), uniqueNumbers.end(), *generator);
+    return uniqueNumbers;
 }
 
 QString MainWindow::textColorBall(int randColor){
@@ -83,6 +88,12 @@ QString MainWindow::textColorBall(int randColor){
         break;
     case 2:
         return "жёлтый";
+        break;
+    case 3:
+        return "зелённый";
+        break;
+    case 4:
+        return "фиолетовый";
         break;
     }
 }
@@ -99,6 +110,12 @@ void MainWindow::on_colorSelecting(int index, Balls *ball){
     case 2:
         color = Qt::yellow;
         break;
+    case 3:
+        color = Qt::green;
+        break;
+    case 4:
+        color = QColorConstants::Svg::purple;
+        break;
     default:
         color = Qt::transparent;
         return;
@@ -108,37 +125,40 @@ void MainWindow::on_colorSelecting(int index, Balls *ball){
 
 void MainWindow::on_checkButton_clicked()
 {
-    if(targetColor1 == ui->colorSelecting->currentIndex()){
-        if(targetColor2 == ui->colorSelecting_2->currentIndex()){
-            if(targetColor3 == ui->colorSelecting_3->currentIndex()){
-                QMessageBox::information(this, "Оповещение!", "Верно!");
-                return;
-            }
-        }
+    QVector<int> v;
+    v.push_back(ui->colorSelecting->currentIndex());
+    v.push_back(ui->colorSelecting_2->currentIndex());
+    v.push_back(ui->colorSelecting_3->currentIndex());
+
+    if(v == uniqueNumbers){
+        QMessageBox::information(this, "Оповещение!", "Верно!");
     }
-    QMessageBox::information(this, "Оповещение!", "Неверно!");
+    else{
+        QMessageBox::information(this, "Оповещение!", "Неверно!");
+    }
 }
 
-void MainWindow::updateRuleGameText()
+void MainWindow::updateRuleGame()
 {
     QString startStatementText = "Если первый шар не ";
-    startStatementText += textColorBall(targetColor3);
+    startStatementText += textColorBall(uniqueNumbers[2]);
     startStatementText += ", а второй ";
-    startStatementText += textColorBall(targetColor2);
+    startStatementText += textColorBall(uniqueNumbers[1]);
     ui->ruleGame->setText(startStatementText);
 }
 
 void MainWindow::on_newLvlButton_clicked()
 {
-    generatorColors();
     startIndexBox();
     startColorBall();
+    int option = 1;
+    QVector<int> uniqueNumbers = generatorUniqueNum(option);
+    qDebug() << uniqueNumbers;
+    //targetColor1 = uniqueNum(targetColor1, targetColor2, targetColor3);
+    //targetColor2 = uniqueNum(targetColor2, targetColor1, targetColor3);
+    //targetColor3 = uniqueNum(targetColor3, targetColor2, targetColor1);
 
-    targetColor1 = uniqueNum(targetColor1, targetColor2, targetColor3);
-    targetColor2 = uniqueNum(targetColor2, targetColor1, targetColor3);
-    targetColor3 = uniqueNum(targetColor3, targetColor2, targetColor1);
-
-    updateRuleGameText();
+    updateRuleGame();
 }
 
 void MainWindow::on_colorSelecting_activated(int index)

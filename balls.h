@@ -16,11 +16,12 @@ private:
     QGraphicsScene *scene;
 
 public:
-    int pos{};
+
     QGraphicsEllipseItem *ellipseItem;
     QGraphicsView *view;
-    explicit Balls(QWidget *parent = nullptr);
+    explicit Balls(QWidget *parent = nullptr, int x = 0, int y = 0);
 protected:
+
 };
 
 #endif // BALLS_H

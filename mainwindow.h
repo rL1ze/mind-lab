@@ -20,20 +20,16 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private slots:
+public slots:
 
     QString textColorBall(int Index);
-
-    //Check unique values
-    int uniqueNum(int num, int num2, int num3);
-    bool isUnique(int num, int num2, int num3);
 
     //Setup balls
     void setupBall(Balls *ball, QFrame *frame);
 
     //Starting properties
-    void generatorColors();
-    void updateRuleGameText();
+    QVector<int> generatorUniqueNum(int targetSize);
+    void updateRuleGame();
     void startColorBall();
     void startIndexBox();
 
@@ -54,10 +50,7 @@ private:
     Balls *ball1;
     Balls *ball2;
     Balls *ball3;
-    int targetColor1;
-    int targetColor2;
-    int targetColor3;
+    QVector<int> uniqueNumbers;
     QRandomGenerator *generator;
-    std::uniform_int_distribution<int> distribution;
 };
 #endif // MAINWINDOW_H
