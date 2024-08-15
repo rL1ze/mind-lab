@@ -38,23 +38,75 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QLabel" name="ruleGame">
     <property name="geometry">
      <rect>
       <x>90</x>
-      <y>190</y>
+      <y>100</y>
+      <width>611</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>170</y>
       <width>614</width>
-      <height>292</height>
+      <height>284</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetDefaultConstraint</enum>
-     </property>
-     <property name="spacing">
-      <number>6</number>
-     </property>
-     <item row="4" column="1">
+     <item row="0" column="0">
+      <widget class="QFrame" name="frame_1">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>200</height>
+        </size>
+       </property>
+       <property name="baseSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
       <widget class="QFrame" name="frame_2">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -82,41 +134,77 @@
        </property>
       </widget>
      </item>
-     <item row="9" column="1">
-      <widget class="QComboBox" name="colorSelecting_2">
+     <item row="0" column="2">
+      <widget class="QFrame" name="frame_3">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="editable">
-        <bool>false</bool>
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>200</height>
+        </size>
        </property>
-       <property name="currentIndex">
-        <number>-1</number>
+       <property name="baseSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
        </property>
-       <item>
-        <property name="text">
-         <string>Синий</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Красный</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Жёлтый</string>
-        </property>
-       </item>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
       </widget>
      </item>
-     <item row="9" column="0">
+     <item row="1" column="0">
+      <widget class="QLabel" name="selectColorText">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Выберите цвет:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="selectColorText_2">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Выберите цвет:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QLabel" name="selectColorText_3">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Выберите цвет:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
       <widget class="QComboBox" name="colorSelecting">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -177,69 +265,69 @@
        </item>
       </widget>
      </item>
-     <item row="8" column="4">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Выберите цвет:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="10" column="4">
-      <widget class="QPushButton" name="newLvlButton">
+     <item row="2" column="1">
+      <widget class="QComboBox" name="colorSelecting_2">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-         <horstretch>50</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QFrame" name="frame_1">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="minimumSize">
-        <size>
-         <width>200</width>
-         <height>200</height>
-        </size>
+       <property name="editable">
+        <bool>false</bool>
        </property>
-       <property name="baseSize">
-        <size>
-         <width>0</width>
-         <height>0</height>
-        </size>
+       <property name="currentIndex">
+        <number>-1</number>
        </property>
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
+       <item>
+        <property name="text">
+         <string>Синий</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Красный</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Жёлтый</string>
+        </property>
+       </item>
       </widget>
      </item>
-     <item row="8" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Выберите цвет:</string>
+     <item row="2" column="2">
+      <widget class="QComboBox" name="colorSelecting_3">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <property name="currentIndex">
+        <number>-1</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>Синий</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Красный</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Жёлтый</string>
+        </property>
+       </item>
       </widget>
      </item>
-     <item row="8" column="1">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Выберите цвет:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="10" column="1">
+     <item row="3" column="1">
       <widget class="QPushButton" name="checkButton">
        <property name="enabled">
         <bool>true</bool>
@@ -276,98 +364,16 @@
        </property>
       </widget>
      </item>
-     <item row="9" column="4">
-      <widget class="QComboBox" name="colorSelecting_3">
+     <item row="3" column="2">
+      <widget class="QPushButton" name="newLvlButton">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>50</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
-       </property>
-       <property name="editable">
-        <bool>false</bool>
-       </property>
-       <property name="currentIndex">
-        <number>-1</number>
-       </property>
-       <item>
-        <property name="text">
-         <string>Синий</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Красный</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Жёлтый</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="4" column="4">
-      <widget class="QFrame" name="frame_3">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>200</width>
-         <height>200</height>
-        </size>
-       </property>
-       <property name="baseSize">
-        <size>
-         <width>0</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>180</x>
-      <y>80</y>
-      <width>451</width>
-      <height>80</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="ruleGame">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>15</pointsize>
-        </font>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
        </property>
        <property name="text">
         <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>

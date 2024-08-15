@@ -15,8 +15,9 @@ class Balls : public QWidget
 private:
     QGraphicsScene *scene;
 
-public:
 
+public:
+    int x, y;
     QGraphicsEllipseItem *ellipseItem;
     QGraphicsView *view;
     explicit Balls(QWidget *parent = nullptr, int x = 0, int y = 0);

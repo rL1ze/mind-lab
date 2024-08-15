@@ -25,7 +25,7 @@ public slots:
     QString textColorBall(int Index);
 
     //Setup balls
-    void setupBall(Balls *ball, QFrame *frame);
+    void setupBall(Balls *ball, QFrame *frame, int x, int y);
 
     //Starting properties
     QVector<int> generatorUniqueNum(int targetSize);
@@ -47,10 +47,6 @@ public slots:
 private:
 
     Ui::MainWindow *ui;
-    Balls *ball1;
-    Balls *ball2;
-    Balls *ball3;
-    QVector<int> uniqueNumbers;
-    QRandomGenerator *generator;
+
 };
 #endif // MAINWINDOW_H
