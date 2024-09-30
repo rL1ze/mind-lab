@@ -5,50 +5,26 @@
 
 Balls *ball1, *ball2, *ball3, *ball4, *ball5;
 QVector<int> uniqueNumbers{0, 1, 2, 3, 4};
-int option =1;
 QRandomGenerator generator = *QRandomGenerator::global();
-
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    if(option == 1){
-        ball1 = new Balls(this, 100, 100);
-        ball2 = new Balls(this, 100, 100);
-        ball3 = new Balls(this, 100, 100);
-        setupBall(ball1, ui->frame_1, 200, 200);
-        setupBall(ball2, ui->frame_2, 200, 200);
-        setupBall(ball3, ui->frame_3, 200, 200);
-    }
 
-    if(option == 2){
-        ball1 = new Balls(this, 50, 50);
-        ball2 = new Balls(this, 50, 50);
-        ball3 = new Balls(this, 50, 50);
-        ball4 = new Balls(this, 50, 50);
-        ball5 = new Balls(this, 50, 50);
-        setupBall(ball1, ui->frame_1, 100, 100);
-        setupBall(ball2, ui->frame_2, 100, 100);
-        setupBall(ball3, ui->frame_3, 100, 100);
+    ball1 = new Balls(100, 100);
+    setupBall(ball1, ui->frame_1, 200, 200);
+    ball2 = new Balls(100, 100);
+    setupBall(ball2, ui->frame_2, 200, 200);
+    ball3 = new Balls(100, 100);
+    setupBall(ball3, ui->frame_3, 200, 200);
 
-        QFrame *frame_4 = new QFrame(), *frame_5 = new QFrame();
-        ui->gridLayout->addWidget(frame_4, 0, 3);
-        ui->gridLayout->addWidget(frame_5, 0, 4);
-        QComboBox *colorSelecting_4 = new QComboBox(), *colorSelecting_5  = new QComboBox();
+    connect(ui->colorSelecting, &QComboBox::activated, this, &MainWindow::colorSelecting_activated);
+    connect(ui->colorSelecting_2, &QComboBox::activated, this, &MainWindow::colorSelecting_2_activated);
+    connect(ui->colorSelecting_3, &QComboBox::activated, this, &MainWindow::colorSelecting_3_activated);
+    connect(ui->checkBox, &QCheckBox::clicked, this, &MainWindow::checkBox_clicked);
 
-        setupBall(ball4, frame_4, 100, 100);
-        setupBall(ball5, frame_5, 100, 100);
-
-        ui->gridLayout->addWidget(colorSelecting_4, 2, 3);
-        ui->gridLayout->addWidget(colorSelecting_5, 2, 4);
-    }
-
-    connect(ui->colorSelecting, &QComboBox::activated, this, &MainWindow::on_colorSelecting_activated);
-    connect(ui->colorSelecting_2, &QComboBox::activated, this, &MainWindow::on_colorSelecting_2_activated);
-    connect(ui->colorSelecting_3, &QComboBox::activated, this, &MainWindow::on_colorSelecting_3_activated);
-
-    on_newLvlButton_clicked();
+    newLvlButton_clicked();
 
     setFixedSize(size());
     setWindowFlags(windowFlags() & ~Qt::WindowMaximizeButtonHint);
@@ -67,6 +43,9 @@ void MainWindow::setupBall(Balls *ball, QFrame *frame, int x, int y){
     // Установка QGraphicsView как дочернего виджета фрейма
     ball->view->setParent(frame);
 
+    ball->view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ball->view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
     // Использование layout для размещения QGraphicsView внутри фрейма
     QVBoxLayout *layout = new QVBoxLayout(frame);
     layout->addWidget(ball->view);
@@ -84,14 +63,14 @@ void MainWindow::startColorBall(){
     ball3->ellipseItem->setBrush(Qt::transparent);
 }
 
-QVector<int> MainWindow::generatorUniqueNum(int option){
-    if(option == 1){
-        std::shuffle(uniqueNumbers.begin(), uniqueNumbers.end() - 2, generator);
-        return uniqueNumbers.mid(0, 3);
-    }
-    if(option == 2){
+QVector<int> MainWindow::generatorUniqueNum(int targetSize){
+    if(targetSize == 5){
         std::shuffle(uniqueNumbers.begin(), uniqueNumbers.end(), generator);
         return uniqueNumbers;
+    }
+    else{
+        std::shuffle(uniqueNumbers.begin(), uniqueNumbers.end() - 2, generator);
+        return uniqueNumbers.mid(0, 3);
     }
 }
 
@@ -115,32 +94,7 @@ QString MainWindow::textColorBall(int randColor){
     }
 }
 
-void MainWindow::on_colorSelecting(int index, Balls *ball){
-    QColor color;
-    switch (index) {
-    case 0:
-        color = Qt::blue;
-        break;
-    case 1:
-        color = Qt::red;
-        break;
-    case 2:
-        color = Qt::yellow;
-        break;
-    case 3:
-        color = Qt::green;
-        break;
-    case 4:
-        color = QColorConstants::Svg::purple;
-        break;
-    default:
-        color = Qt::transparent;
-        return;
-    }
-    ball->ellipseItem->setBrush(color);
-}
-
-void MainWindow::on_checkButton_clicked()
+void MainWindow::checkButton_clicked()
 {
     QVector<int> v;
     v.push_back(ui->colorSelecting->currentIndex());
@@ -150,13 +104,12 @@ void MainWindow::on_checkButton_clicked()
     if(v == uniqueNumbers.mid(0, 3)){
         QMessageBox::information(this, "Оповещение!", "Верно!");
     }
-    else if(v == uniqueNumbers.mid(2, -1) && option == 2){
+    else if(v == uniqueNumbers.mid(2) ){
         QMessageBox::information(this, "Оповещение!", "Верно!");
     }
     else{
         QMessageBox::information(this, "Оповещение!", "Неверно!");
     }
-
 }
 
 void MainWindow::updateRuleGame()
@@ -168,28 +121,124 @@ void MainWindow::updateRuleGame()
     ui->ruleGame->setText(startStatementText);
 }
 
-void MainWindow::on_newLvlButton_clicked()
+void MainWindow::newLvlButton_clicked()
 {
     startIndexBox();
     startColorBall();
-    QVector<int> uniqueNumbers = generatorUniqueNum(option);
+    QVector<int> uniqueNumbers = generatorUniqueNum(3);
     qDebug() << uniqueNumbers;
 
     updateRuleGame();
 }
 
-void MainWindow::on_colorSelecting_activated(int index)
+void MainWindow::colorSelecting_activated(int index)
 {
-    on_colorSelecting(index, ball1);
+    Balls::colorSelecting(index, ball1);
 }
 
-void MainWindow::on_colorSelecting_2_activated(int index)
+void MainWindow::colorSelecting_2_activated(int index)
 {
-    on_colorSelecting(index, ball2);
+    Balls::colorSelecting(index, ball2);
 }
 
-void MainWindow::on_colorSelecting_3_activated(int index)
+void MainWindow::colorSelecting_3_activated(int index)
 {
-    on_colorSelecting(index, ball3);
+    Balls::colorSelecting(index, ball3);
 }
+
+void MainWindow::colorSelecting_4_activated(int index)
+{
+    Balls::colorSelecting(index, ball4);
+}
+
+void MainWindow::colorSelecting_5_activated(int index)
+{
+    Balls::colorSelecting(index, ball5);
+}
+
+void MainWindow::checkBox_clicked(bool checked)
+{
+    if(checked == true){
+        startIndexBox();
+        startColorBall();
+        ball1->ellipseItem->setRect(14, 15, 50, 50);
+        ball2->ellipseItem->setRect(14, 15, 50, 50);
+        ball3->ellipseItem->setRect(14, 15, 50, 50);
+
+        ui->frame_1->setFixedSize(100, 100);
+        ui->frame_2->setFixedSize(100, 100);
+        ui->frame_3->setFixedSize(100, 100);
+
+        QFrame *frame_4 = new QFrame();
+        QFrame *frame_5 = new QFrame();
+        ui->gridLayout->addWidget(frame_4, 0, 3);
+        ui->gridLayout->addWidget(frame_5, 0, 4);
+
+        ball4 = new Balls(50, 50);
+        setupBall(ball4, frame_4, 100, 100);
+        ball5 = new Balls(50, 50);
+        setupBall(ball5, frame_5, 100, 100);
+
+        QComboBox *colorSelecting_4 = new QComboBox();
+        QComboBox *colorSelecting_5 = new QComboBox();
+
+        connect(colorSelecting_4, &QComboBox::activated, this, &MainWindow::colorSelecting_4_activated);
+        connect(colorSelecting_5, &QComboBox::activated, this, &MainWindow::colorSelecting_5_activated);
+
+        QStringList colorSlectingList{"Синий", "Красный", "Жёлтый", "Зелённый", "Фиолетовый"};
+        ui->colorSelecting->addItems(colorSlectingList.mid(3));
+        ui->colorSelecting_2->addItems(colorSlectingList.mid(3));
+        ui->colorSelecting_3->addItems(colorSlectingList.mid(3));
+        colorSelecting_4->addItems(colorSlectingList);
+        colorSelecting_5->addItems(colorSlectingList);
+
+        colorSelecting_4->setCurrentIndex(-1);
+        colorSelecting_5->setCurrentIndex(-1);
+
+        ui->gridLayout->addWidget(colorSelecting_4, 2, 3);
+        ui->gridLayout->addWidget(colorSelecting_5, 2, 4);
+
+        QLabel *selectColorText_4 = new QLabel("Выберите цвет:");
+        QLabel *selectColorText_5 = new QLabel("Выберите цвет:");
+
+        ui->gridLayout->addWidget(selectColorText_4, 1, 3);
+        ui->gridLayout->addWidget(selectColorText_5, 1, 4);
+    }
+    else if(checked == false){
+        startIndexBox();
+        startColorBall();
+        removeExtraBalls();
+
+        ball1->ellipseItem->setRect(0, 0, 100, 100);
+        ball2->ellipseItem->setRect(0, 0, 100, 100);
+        ball3->ellipseItem->setRect(0, 0, 100, 100);
+
+        ui->frame_1->setFixedSize(200, 200);
+        ui->frame_2->setFixedSize(200, 200);
+        ui->frame_3->setFixedSize(200, 200);
+
+        ui->colorSelecting->removeItem(3);
+        ui->colorSelecting->removeItem(3);
+
+        ui->colorSelecting_2->removeItem(3);
+        ui->colorSelecting_2->removeItem(3);
+
+        ui->colorSelecting_3->removeItem(3);
+        ui->colorSelecting_3->removeItem(3);
+    }
+}
+
+void MainWindow::removeExtraBalls() {
+    delete ball4->ellipseItem;
+    delete ball5->ellipseItem;
+
+    delete ui->gridLayout->itemAtPosition(1,3)->widget();
+    delete ui->gridLayout->itemAtPosition(1,4)->widget();
+    delete ui->gridLayout->itemAtPosition(0,3)->widget();
+    delete ui->gridLayout->itemAtPosition(0,4)->widget();
+    delete ui->gridLayout->itemAtPosition(2,3)->widget();
+    delete ui->gridLayout->itemAtPosition(2,4)->widget();
+}
+
+
 

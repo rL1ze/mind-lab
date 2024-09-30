@@ -26,6 +26,7 @@ public slots:
 
     //Setup balls
     void setupBall(Balls *ball, QFrame *frame, int x, int y);
+    void removeExtraBalls();
 
     //Starting properties
     QVector<int> generatorUniqueNum(int targetSize);
@@ -34,15 +35,17 @@ public slots:
     void startIndexBox();
 
     //Buttons
-    void on_newLvlButton_clicked();
-    void on_checkButton_clicked();
+    void newLvlButton_clicked();
+    void checkButton_clicked();
 
-    //Change color of the balls
-    void on_colorSelecting(int index, Balls *ball);
+    void colorSelecting_activated(int index);
+    void colorSelecting_2_activated(int index);
+    void colorSelecting_3_activated(int index);
+    void colorSelecting_4_activated(int index);
+    void colorSelecting_5_activated(int index);
 
-    void on_colorSelecting_activated(int index);
-    void on_colorSelecting_2_activated(int index);
-    void on_colorSelecting_3_activated(int index);
+private slots:
+    void checkBox_clicked(bool checked);
 
 private:
 
