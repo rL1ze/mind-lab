@@ -26,16 +26,17 @@ public slots:
 
     //Setup balls
     void setupBall(Balls *ball, QFrame *frame, int x, int y);
-    void removeExtraBalls();
+    void removeObjectsOnWindow();
 
     //Starting properties
-    QVector<int> generatorUniqueNum(int targetSize);
+    QVector<int> generatorUniqueNum();
     void updateRuleGame();
     void startColorBall();
     void startIndexBox();
+    void enableElements();
 
     //Buttons
-    void newLvlButton_clicked();
+    void startButton_clicked();
     void checkButton_clicked();
 
     void colorSelecting_activated(int index);
@@ -45,7 +46,8 @@ public slots:
     void colorSelecting_5_activated(int index);
 
 private slots:
-    void checkBox_clicked(bool checked);
+
+    void on_changeHard_checkableChanged(bool checkable);
 
 private:
 

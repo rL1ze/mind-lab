@@ -42,13 +42,13 @@
     <property name="geometry">
      <rect>
       <x>90</x>
-      <y>100</y>
+      <y>56</y>
       <width>611</width>
-      <height>27</height>
+      <height>71</height>
      </rect>
     </property>
     <property name="sizePolicy">
-     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
       <horstretch>0</horstretch>
       <verstretch>0</verstretch>
      </sizepolicy>
@@ -67,6 +67,9 @@
     <property name="alignment">
      <set>Qt::AlignCenter</set>
     </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
@@ -74,10 +77,57 @@
       <x>90</x>
       <y>170</y>
       <width>614</width>
-      <height>284</height>
+      <height>314</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
+     <item row="1" column="0">
+      <widget class="QLabel" name="selectColorText">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Выберите цвет:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QComboBox" name="colorSelecting_3">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <property name="currentIndex">
+        <number>-1</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>Синий</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Красный</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Жёлтый</string>
+        </property>
+       </item>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="QFrame" name="frame_1">
        <property name="sizePolicy">
@@ -103,6 +153,53 @@
        </property>
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QComboBox" name="colorSelecting_2">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <property name="currentIndex">
+        <number>-1</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>Синий</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Красный</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Жёлтый</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="selectColorText_2">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Выберите цвет:</string>
        </property>
       </widget>
      </item>
@@ -134,60 +231,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QFrame" name="frame_3">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>200</width>
-         <height>200</height>
-        </size>
-       </property>
-       <property name="baseSize">
-        <size>
-         <width>0</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="selectColorText">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Выберите цвет:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLabel" name="selectColorText_2">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Выберите цвет:</string>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="2">
       <widget class="QLabel" name="selectColorText_3">
        <property name="sizePolicy">
@@ -203,6 +246,9 @@
      </item>
      <item row="2" column="0">
       <widget class="QComboBox" name="colorSelecting">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -265,72 +311,38 @@
        </item>
       </widget>
      </item>
-     <item row="2" column="1">
-      <widget class="QComboBox" name="colorSelecting_2">
+     <item row="0" column="2">
+      <widget class="QFrame" name="frame_3">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="editable">
-        <bool>false</bool>
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>200</height>
+        </size>
        </property>
-       <property name="currentIndex">
-        <number>-1</number>
+       <property name="baseSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
        </property>
-       <item>
-        <property name="text">
-         <string>Синий</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Красный</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Жёлтый</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="2" column="2">
-      <widget class="QComboBox" name="colorSelecting_3">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
        </property>
-       <property name="editable">
-        <bool>false</bool>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
        </property>
-       <property name="currentIndex">
-        <number>-1</number>
-       </property>
-       <item>
-        <property name="text">
-         <string>Синий</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Красный</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Жёлтый</string>
-        </property>
-       </item>
       </widget>
      </item>
      <item row="3" column="1">
       <widget class="QPushButton" name="checkButton">
        <property name="enabled">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -364,32 +376,34 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="2">
-      <widget class="QPushButton" name="newLvlButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>50</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
     </layout>
    </widget>
-   <widget class="QCheckBox" name="checkBox">
+   <widget class="QPushButton" name="startButton">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>100</y>
-      <width>78</width>
-      <height>22</height>
+      <x>297</x>
+      <y>490</y>
+      <width>200</width>
+      <height>24</height>
      </rect>
     </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
     <property name="text">
-     <string>CheckBox</string>
+     <string>Запуск</string>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+    <property name="default">
+     <bool>false</bool>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
     </property>
    </widget>
   </widget>
@@ -402,8 +416,33 @@
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="title">
+     <string>Меню</string>
+    </property>
+    <widget class="QMenu" name="submenu">
+     <property name="title">
+      <string>Выбо режима</string>
+     </property>
+     <addaction name="changeHard"/>
+    </widget>
+    <addaction name="separator"/>
+    <addaction name="submenu"/>
+   </widget>
+   <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="changeHard">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Усложнённый</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
