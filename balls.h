@@ -7,20 +7,25 @@
 #include <QPaintEvent>
 #include <Qt>
 #include <QGraphicsScene>
+#include <QVBoxLayout>
 
-class Balls : public QWidget
+class Balls
 {
-    Q_OBJECT
-
-private:
+private:  
     QGraphicsScene *scene;
 
 public:
-    int pos{};
+    int x, y;
+
     QGraphicsEllipseItem *ellipseItem;
     QGraphicsView *view;
-    explicit Balls(QWidget *parent = nullptr);
+
+    explicit Balls(int x = 0, int y = 0);
+
+    static void colorSelecting(int index, Balls *ball);
+
 protected:
+
 };
 
 #endif // BALLS_H

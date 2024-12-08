@@ -20,44 +20,38 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private slots:
+public slots:
 
     QString textColorBall(int Index);
 
-    //Check unique values
-    int uniqueNum(int num, int num2, int num3);
-    bool isUnique(int num, int num2, int num3);
-
     //Setup balls
-    void setupBall(Balls *ball, QFrame *frame);
+    void setupBall(Balls *ball, QFrame *frame, int x, int y);
+    void removeObjectsOnWindow();
 
     //Starting properties
-    void generatorColors();
-    void updateRuleGameText();
+    QVector<int> generatorUniqueNum();
+    void updateRuleGame();
     void startColorBall();
     void startIndexBox();
+    void enableElements();
 
     //Buttons
-    void on_newLvlButton_clicked();
-    void on_checkButton_clicked();
+    void startButton_clicked();
+    void checkButton_clicked();
 
-    //Change color of the balls
-    void on_colorSelecting(int index, Balls *ball);
+    void colorSelecting_activated(int index);
+    void colorSelecting_2_activated(int index);
+    void colorSelecting_3_activated(int index);
+    void colorSelecting_4_activated(int index);
+    void colorSelecting_5_activated(int index);
 
-    void on_colorSelecting_activated(int index);
-    void on_colorSelecting_2_activated(int index);
-    void on_colorSelecting_3_activated(int index);
+private slots:
+
+    void on_changeHard_checkableChanged(bool checkable);
 
 private:
 
     Ui::MainWindow *ui;
-    Balls *ball1;
-    Balls *ball2;
-    Balls *ball3;
-    int targetColor1;
-    int targetColor2;
-    int targetColor3;
-    QRandomGenerator *generator;
-    std::uniform_int_distribution<int> distribution;
+
 };
 #endif // MAINWINDOW_H

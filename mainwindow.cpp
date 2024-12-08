@@ -3,73 +3,106 @@
 #include "balls.h"
 #include "qgraphicsitem.h"
 
+Balls *ball1, *ball2, *ball3, *ball4, *ball5;
+QVector<int> uniqueNum{0, 1, 2, 3, 4};
+QVector<int> uniqueNumFor3{0, 1, 2};
+QVector<int> targetUniqueNum;
+QVector<int> targetIndexs;
+bool choiceOfAmountBall;
+QRandomGenerator generator = *QRandomGenerator::global();
+QComboBox *colorSelecting_4;
+QComboBox *colorSelecting_5;
+
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow),
-    ball1(new Balls(this)), ball2(new Balls(this)), ball3(new Balls(this)), targetColor1(0), targetColor2(0),targetColor3(0),generator(QRandomGenerator::global()),distribution(0,2)
+    : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
-    setupBall(ball1, ui->frame_1);
-    setupBall(ball2, ui->frame_2);
-    setupBall(ball3, ui->frame_3);
+    ball1 = new Balls(100, 100);
+    setupBall(ball1, ui->frame_1, 200, 200);
+    ball2 = new Balls(100, 100);
+    setupBall(ball2, ui->frame_2, 200, 200);
+    ball3 = new Balls(100, 100);
+    setupBall(ball3, ui->frame_3, 200, 200);
 
-    connect(ui->colorSelecting, &QComboBox::activated, this, &MainWindow::on_colorSelecting_activated);
-    connect(ui->colorSelecting_2, &QComboBox::activated, this, &MainWindow::on_colorSelecting_2_activated);
-    connect(ui->colorSelecting_3, &QComboBox::activated, this, &MainWindow::on_colorSelecting_3_activated);
+    //Выбор цвета в ComboBox
+    connect(ui->colorSelecting, &QComboBox::activated, this, &MainWindow::colorSelecting_activated);
+    connect(ui->colorSelecting_2, &QComboBox::activated, this, &MainWindow::colorSelecting_2_activated);
+    connect(ui->colorSelecting_3, &QComboBox::activated, this, &MainWindow::colorSelecting_3_activated);
 
-    updateRuleGameText();
-    on_newLvlButton_clicked();
-    setFixedSize(size());
+    //Проверка решения, начало перезапуск игры при помощи кнопок
+    connect(ui->checkButton, &QPushButton::clicked, this, &MainWindow::checkButton_clicked);
+    connect(ui->startButton, &QPushButton::clicked, this, &MainWindow::startButton_clicked);
+
+    //Смена сложности игры при помощи действий
+    connect(ui->changeHard, &QAction::toggled, this, &MainWindow::on_changeHard_checkableChanged);
+
+    //Фиксация окна
+    setFixedSize(size());   
     setWindowFlags(windowFlags() & ~Qt::WindowMaximizeButtonHint);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete ball1;
-    delete ball2;
-    delete ball3;
 }
 
 // Устанавливаем размер и положение в соответствии с QFrame и станавливаем родительский виджет
-void MainWindow::setupBall(Balls *ball, QFrame *frame){
-    ball->view->setGeometry(frame->geometry());
+void MainWindow::setupBall(Balls *ball, QFrame *frame, int x, int y){
+    // Установка фиксированных размеров для фрейма
+    frame->setFixedSize(x, y);
+
+    // Установка QGraphicsView как дочернего виджета фрейма
     ball->view->setParent(frame);
+
+    ball->view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ball->view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    // Использование layout для размещения QGraphicsView внутри фрейма
+    QVBoxLayout *layout = new QVBoxLayout(frame);
+    layout->addWidget(ball->view);
+}
+
+void MainWindow::enableElements(){
+    ui->colorSelecting->setEnabled(true);
+    ui->colorSelecting_2->setEnabled(true);
+    ui->colorSelecting_3->setEnabled(true);
+
+    ui->menu->setEnabled(true);
+
+    ui->checkButton->setEnabled(true);
 }
 
 void MainWindow::startIndexBox(){
     ui->colorSelecting->setCurrentIndex(-1);
     ui->colorSelecting_2->setCurrentIndex(-1);
     ui->colorSelecting_3->setCurrentIndex(-1);
+
+    if(choiceOfAmountBall == true){
+        colorSelecting_4->setCurrentIndex(-1);
+        colorSelecting_5->setCurrentIndex(-1);
+    }
 }
 
 void MainWindow::startColorBall(){
     ball1->ellipseItem->setBrush(Qt::transparent);
     ball2->ellipseItem->setBrush(Qt::transparent);
     ball3->ellipseItem->setBrush(Qt::transparent);
-}
 
-void MainWindow::generatorColors(){
-    targetColor1 = distribution(*generator);
-    targetColor2 = distribution(*generator);
-    targetColor3 = distribution(*generator);
-}
-
-int MainWindow::uniqueNum(int num, int num2, int num3){
-    if(isUnique(num, num2, num3)){
-        while (num == num2 || num == num3) {
-            num = distribution(*generator);
-        }
+    if(choiceOfAmountBall == true){
+        ball4->ellipseItem->setBrush(Qt::transparent);
+        ball5->ellipseItem->setBrush(Qt::transparent);
     }
-    return num;
 }
 
-bool MainWindow::isUnique(int num, int num2, int num3){
-    if(num == num2 || num == num3){
-        return true;
+QVector<int> MainWindow::generatorUniqueNum(){
+    if(choiceOfAmountBall){
+        std::shuffle(uniqueNum.begin(), uniqueNum.end(), generator);
+        return uniqueNum;
     }
     else{
-        return false;
+        std::shuffle(uniqueNumFor3.begin(), uniqueNumFor3.end(), generator);
+        return uniqueNumFor3;
     }
 }
 
@@ -84,75 +117,193 @@ QString MainWindow::textColorBall(int randColor){
     case 2:
         return "жёлтый";
         break;
+    case 3:
+        return "зелённый";
+        break;
+    case 4:
+        return "фиолетовый";
+        break;
     }
 }
 
-void MainWindow::on_colorSelecting(int index, Balls *ball){
-    QColor color;
-    switch (index) {
-    case 0:
-        color = Qt::blue;
-        break;
-    case 1:
-        color = Qt::red;
-        break;
-    case 2:
-        color = Qt::yellow;
-        break;
-    default:
-        color = Qt::transparent;
-        return;
+void MainWindow::checkButton_clicked()
+{
+    targetIndexs.clear();
+    targetIndexs.push_back(ui->colorSelecting->currentIndex());
+    targetIndexs.push_back(ui->colorSelecting_2->currentIndex());
+    targetIndexs.push_back(ui->colorSelecting_3->currentIndex());
+
+    if(choiceOfAmountBall){
+    targetIndexs.push_back(colorSelecting_4->currentIndex());
+    targetIndexs.push_back(colorSelecting_5->currentIndex());
     }
-    ball->ellipseItem->setBrush(color);
-}
 
-void MainWindow::on_checkButton_clicked()
-{
-    if(targetColor1 == ui->colorSelecting->currentIndex()){
-        if(targetColor2 == ui->colorSelecting_2->currentIndex()){
-            if(targetColor3 == ui->colorSelecting_3->currentIndex()){
-                QMessageBox::information(this, "Оповещение!", "Верно!");
-                return;
-            }
-        }
+    if(choiceOfAmountBall && targetIndexs == uniqueNum){
+        QMessageBox::information(this, "Оповещение!", "Верно!");
     }
-    QMessageBox::information(this, "Оповещение!", "Неверно!");
+    else if(!choiceOfAmountBall && targetIndexs == uniqueNumFor3){
+        QMessageBox::information(this, "Оповещение!", "Верно!");
+    }
+    else{
+        QMessageBox::information(this, "Оповещение!", "Не верно!");
+    }
 }
 
-void MainWindow::updateRuleGameText()
+void MainWindow::updateRuleGame()
 {
-    QString startStatementText = "Если первый шар не ";
-    startStatementText += textColorBall(targetColor3);
-    startStatementText += ", а второй ";
-    startStatementText += textColorBall(targetColor2);
-    ui->ruleGame->setText(startStatementText);
+    QString lastWords;
+    QString statementText;
+    if(choiceOfAmountBall){
+        statementText.clear();
+        statementText = "Если первый шар не ";
+        statementText += textColorBall(targetUniqueNum[3]);
+        statementText += ", а второй ";
+        statementText += textColorBall(targetUniqueNum[1]);
+        statementText += ", последний не ";
+        statementText += textColorBall(targetUniqueNum[3]) + ".";
+        statementText += " " + textColorBall(targetUniqueNum[2]).replace(0 , 1, textColorBall(targetUniqueNum[2]).first(1).toUpper()) + " между ";
+        statementText += textColorBall(targetUniqueNum[4]).removeLast() + "м";
+        statementText += " и " + textColorBall(targetUniqueNum[1]).removeLast() + "м.";
+        lastWords = ", последний не";
+    }
+    else if(!choiceOfAmountBall){
+        statementText.clear();
+        statementText = "Если первый шар не ";
+        statementText += textColorBall(targetUniqueNum[2]);
+        statementText += ", а второй ";
+        statementText += textColorBall(targetUniqueNum[1]);
+    }
+    else{
+        statementText.remove(lastWords);
+    }
+    ui->ruleGame->setText(statementText);
 }
 
-void MainWindow::on_newLvlButton_clicked()
+void MainWindow::startButton_clicked()
 {
-    generatorColors();
+    enableElements();
+    targetIndexs.clear();
+    targetUniqueNum = generatorUniqueNum();
+    updateRuleGame();
     startIndexBox();
-    startColorBall();
-
-    targetColor1 = uniqueNum(targetColor1, targetColor2, targetColor3);
-    targetColor2 = uniqueNum(targetColor2, targetColor1, targetColor3);
-    targetColor3 = uniqueNum(targetColor3, targetColor2, targetColor1);
-
-    updateRuleGameText();
+    startColorBall();    
+    qDebug() << targetUniqueNum;
 }
 
-void MainWindow::on_colorSelecting_activated(int index)
+void MainWindow::colorSelecting_activated(int index)
 {
-    on_colorSelecting(index, ball1);
+    Balls::colorSelecting(index, ball1);
 }
 
-void MainWindow::on_colorSelecting_2_activated(int index)
+void MainWindow::colorSelecting_2_activated(int index)
 {
-    on_colorSelecting(index, ball2);
+    Balls::colorSelecting(index, ball2);
 }
 
-void MainWindow::on_colorSelecting_3_activated(int index)
+void MainWindow::colorSelecting_3_activated(int index)
 {
-    on_colorSelecting(index, ball3);
+    Balls::colorSelecting(index, ball3);
+}
+
+void MainWindow::colorSelecting_4_activated(int index)
+{
+    Balls::colorSelecting(index, ball4);
+}
+
+void MainWindow::colorSelecting_5_activated(int index)
+{
+    Balls::colorSelecting(index, ball5);
+}
+
+void MainWindow::on_changeHard_checkableChanged(bool checkable)
+{
+    if(checkable == true){
+        choiceOfAmountBall = checkable;
+
+        ball1->ellipseItem->setRect(14, 15, 50, 50);
+        ball2->ellipseItem->setRect(14, 15, 50, 50);
+        ball3->ellipseItem->setRect(14, 15, 50, 50);
+
+        ui->frame_1->setFixedSize(100, 100);
+        ui->frame_2->setFixedSize(100, 100);
+        ui->frame_3->setFixedSize(100, 100);
+
+        QLabel *selectColorText_4 = new QLabel("Выберите цвет:");
+        QLabel *selectColorText_5 = new QLabel("Выберите цвет:");
+
+        colorSelecting_4 = new QComboBox();
+        colorSelecting_5 = new QComboBox();
+
+        connect(colorSelecting_4, &QComboBox::activated, this, &MainWindow::colorSelecting_4_activated);
+        connect(colorSelecting_5, &QComboBox::activated, this, &MainWindow::colorSelecting_5_activated);
+
+        QFrame *frame_4 = new QFrame();
+        QFrame *frame_5 = new QFrame();
+
+        ball4 = new Balls(50, 50);
+        setupBall(ball4, frame_4, 100, 100);
+        ball5 = new Balls(50, 50);
+        setupBall(ball5, frame_5, 100, 100);
+
+        QStringList colorSlectingList{"Синий", "Красный", "Жёлтый", "Зелённый", "Фиолетовый"};
+        ui->colorSelecting->addItems(colorSlectingList.mid(3));
+        ui->colorSelecting_2->addItems(colorSlectingList.mid(3));
+        ui->colorSelecting_3->addItems(colorSlectingList.mid(3));
+        colorSelecting_4->addItems(colorSlectingList);
+        colorSelecting_5->addItems(colorSlectingList);
+
+        startButton_clicked();
+
+        ui->gridLayout->addWidget(ui->checkButton, 3, 2);
+
+        ui->gridLayout->addWidget(frame_4, 0, 3);
+        ui->gridLayout->addWidget(frame_5, 0, 4);
+
+        ui->gridLayout->addWidget(colorSelecting_4, 2, 3);
+        ui->gridLayout->addWidget(colorSelecting_5, 2, 4);
+
+        ui->gridLayout->addWidget(selectColorText_4, 1, 3);
+        ui->gridLayout->addWidget(selectColorText_5, 1, 4);
+
+        targetIndexs.clear();
+    }
+    else if(checkable == false){
+        choiceOfAmountBall = checkable;
+        startButton_clicked();
+        removeObjectsOnWindow();
+
+        ball1->ellipseItem->setRect(0, 0, 100, 100);
+        ball2->ellipseItem->setRect(0, 0, 100, 100);
+        ball3->ellipseItem->setRect(0, 0, 100, 100);
+
+        ui->frame_1->setFixedSize(200, 200);
+        ui->frame_2->setFixedSize(200, 200);
+        ui->frame_3->setFixedSize(200, 200);
+
+        ui->gridLayout->addWidget(ui->checkButton, 3, 1);
+
+        ui->colorSelecting->removeItem(3);
+        ui->colorSelecting->removeItem(3);
+
+        ui->colorSelecting_2->removeItem(3);
+        ui->colorSelecting_2->removeItem(3);
+
+        ui->colorSelecting_3->removeItem(3);
+        ui->colorSelecting_3->removeItem(3);
+
+        targetIndexs.clear();
+    }
+}
+
+void MainWindow::removeObjectsOnWindow() {
+    delete ball4->ellipseItem;
+    delete ball5->ellipseItem;
+
+    delete ui->gridLayout->itemAtPosition(1,3)->widget();
+    delete ui->gridLayout->itemAtPosition(1,4)->widget();
+    delete ui->gridLayout->itemAtPosition(0,3)->widget();
+    delete ui->gridLayout->itemAtPosition(0,4)->widget();
+    delete ui->gridLayout->itemAtPosition(2,3)->widget();
+    delete ui->gridLayout->itemAtPosition(2,4)->widget();
 }
 
