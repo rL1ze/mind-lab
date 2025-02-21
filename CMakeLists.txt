@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(LogicalBalls VERSION 0.1 LANGUAGES CXX)
+project(Mindlab VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -13,7 +13,7 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
 
 
-set(TS_FILES LogicalBalls_ru_RU.ts)
+set(TS_FILES Mindlab_ru_RU.ts)
 
 set(PROJECT_SOURCES
         main.cpp
