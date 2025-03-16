@@ -1,4 +1,5 @@
-#include "mainwindow.h"
+#include "logicalballs.h"
+#include "sudoku.h"
 
 #include <QApplication>
 #include <QLocale>
@@ -11,14 +12,16 @@ int main(int argc, char *argv[])
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
     for (const QString &locale : uiLanguages) {
-        const QString baseName = "LogicalBalls_" + QLocale(locale).name();
+        const QString baseName = "Mindlab_" + QLocale(locale).name();
         if (translator.load(":/i18n/" + baseName)) {
             a.installTranslator(&translator);
             break;
         }
     }
-    MainWindow w;
-    w.show();
+    Sudoku sudoku;
+    LogicalBalls lb;
+    lb.show();
+    sudoku.show();
     return a.exec();
 }
 

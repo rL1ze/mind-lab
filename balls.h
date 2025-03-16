@@ -2,26 +2,20 @@
 #define BALLS_H
 
 #include <QGraphicsView>
-#include <QWidget>
-#include <QPainter>
-#include <QPaintEvent>
-#include <Qt>
 #include <QGraphicsScene>
-#include <QVBoxLayout>
 
 class Balls
 {
-private:  
-    QGraphicsScene *scene;
+private:
 
-public:
     int x, y;
 
+public:
+    QGraphicsScene *scene;
     QGraphicsEllipseItem *ellipseItem;
     QGraphicsView *view;
 
-    explicit Balls(int x = 0, int y = 0);
-
+    Balls(int x = 0, int y = 0);
     static void colorSelecting(int index, Balls *ball);
 
 protected:
