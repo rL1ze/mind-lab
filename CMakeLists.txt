@@ -29,8 +29,14 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         balls.h balls.cpp
 
+        logicalballs.h logicalballs.cpp logicalballs.ui
+        sudoku.h sudoku.cpp sudoku.ui
+        nopeek.h nopeek.cpp nopeek.ui
 
-    )
+
+
+
+)
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Mindlab APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
 #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)

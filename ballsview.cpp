@@ -1,16 +1,8 @@
-#include "balls.h"
-#include "qgraphicsitem.h"
+#include "ballsview.h"
 
-Balls::Balls(int x, int y)
-    : scene(new QGraphicsScene()),
-    view(new QGraphicsView(scene)), ellipseItem(nullptr), x(x), y(y){
+BallsView::BallsView() {}
 
-    view->setScene(scene);
-    ellipseItem = new QGraphicsEllipseItem(0, 0, x, y);
-    scene->addItem(ellipseItem);
-}
-
-void Balls::colorSelecting(int index, Balls *ball){
+void BallsView::colorSelecting(int index, Balls *ball){
     QColor color;
     switch (index) {
     case 0:
@@ -34,10 +26,3 @@ void Balls::colorSelecting(int index, Balls *ball){
     }
     ball->ellipseItem->setBrush(color);
 }
-
-
-
-
-
-
-

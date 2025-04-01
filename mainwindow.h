@@ -1,7 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "balls.h"
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QRandomGenerator64>
@@ -22,32 +21,17 @@ public:
 
 public slots:
 
-    QString textColorBall(int Index);
-
-    //Setup balls
-    void setupBall(Balls *ball, QFrame *frame, int x, int y);
-    void removeObjectsOnWindow();
-
-    //Starting properties
-    QVector<int> generatorUniqueNum();
-    void updateRuleGame();
-    void startColorBall();
-    void startIndexBox();
-    void enableElements();
-
-    //Buttons
-    void startButton_clicked();
-    void checkButton_clicked();
-
-    void colorSelecting_activated(int index);
-    void colorSelecting_2_activated(int index);
-    void colorSelecting_3_activated(int index);
-    void colorSelecting_4_activated(int index);
-    void colorSelecting_5_activated(int index);
+    void keyPressEvent(QKeyEvent *event) override;
 
 private slots:
 
-    void on_changeHard_checkableChanged(bool checkable);
+    void on_buttonLogicalGames_clicked();
+
+    void on_startButtonSuduoku_clicked();
+
+    void on_startButtonLogicalBalls_clicked();
+
+    void on_startButtonNoPeek_clicked();
 
 private:
 
