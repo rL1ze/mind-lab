@@ -21,9 +21,17 @@ public:
 
 public slots:
 
+    void keyPressEvent(QKeyEvent *event) override;
 
 private slots:
 
+    void on_buttonLogicalGames_clicked();
+
+    void on_startButtonSuduoku_clicked();
+
+    void on_startButtonLogicalBalls_clicked();
+
+    void on_startButtonNoPeek_clicked();
 
 private:
 

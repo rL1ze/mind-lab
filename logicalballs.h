@@ -5,6 +5,7 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QRandomGenerator64>
+#include <qcombobox.h>
 
 namespace Ui {
 class LogicalBalls;
@@ -37,13 +38,25 @@ public slots:
     void startButton_clicked();
     void checkButton_clicked();
 
+    void closeEvent(QCloseEvent *event) override;
     void colorSelecting(int ballIndex, int colorIndex);
 
+signals:
+    void close();
 private slots:
-
     void on_changeHard_checkableChanged(bool checkabled);
 
 private:
+    Balls *ball1, *ball2, *ball3, *ball4, *ball5;
+    QVector<int> uniqueNum{0, 1, 2, 3, 4};
+    QVector<int> uniqueNumFor3{0, 1, 2};
+    QVector<int> targetUniqueNum;
+    QVector<int> targetIndexs;
+    bool choiceOfAmountBall;
+    QRandomGenerator *generator = QRandomGenerator::global();
+    QComboBox *colorSelecting_4;
+    QComboBox *colorSelecting_5;
+
     Ui::LogicalBalls *ui;
 };
 

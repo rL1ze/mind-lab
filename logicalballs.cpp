@@ -3,16 +3,6 @@
 #include "balls.h"
 #include <qgraphicsitem.h>
 
-Balls *ball1, *ball2, *ball3, *ball4, *ball5;
-QVector<int> uniqueNum{0, 1, 2, 3, 4};
-QVector<int> uniqueNumFor3{0, 1, 2};
-QVector<int> targetUniqueNum;
-QVector<int> targetIndexs;
-bool choiceOfAmountBall;
-QRandomGenerator *generator = QRandomGenerator::global();
-QComboBox *colorSelecting_4;
-QComboBox *colorSelecting_5;
-
 LogicalBalls::LogicalBalls(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::LogicalBalls)
@@ -46,6 +36,11 @@ LogicalBalls::LogicalBalls(QWidget *parent)
 LogicalBalls::~LogicalBalls()
 {
     delete ui;
+}
+
+void LogicalBalls::closeEvent(QCloseEvent *event)
+{
+    emit close();
 }
 
 // Устанавливаем размер и положение в соответствии с QFrame и станавливаем родительский виджет

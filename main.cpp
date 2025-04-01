@@ -1,5 +1,4 @@
-#include "logicalballs.h"
-#include "sudoku.h"
+#include "mainwindow.h"
 
 #include <QApplication>
 #include <QLocale>
@@ -18,10 +17,8 @@ int main(int argc, char *argv[])
             break;
         }
     }
-    Sudoku sudoku;
-    LogicalBalls lb;
-    lb.show();
-    sudoku.show();
+    MainWindow mw;
+    mw.show();
     return a.exec();
 }
 
